@@ -13,7 +13,7 @@
 //[6]0 1 2 3 ... 127	
 //[7]0 1 2 3 ... 127
 
-void delay_ms(unsigned long ms) 
+void delay_ms(uint32_t ms)
 {
     mspm0_delay_ms(ms);
 }

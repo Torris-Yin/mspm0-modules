@@ -96,7 +96,7 @@
                         </toolChain>
                     </folderInfo>
                     <sourceEntries>
-                        <entry excluding="Drivers/OLED_Software_I2C|Drivers/OLED_Software_SPI|Drivers/MPU6050|Drivers/OLED_Hardware_I2C" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="Drivers/OLED_Software_SPI|Drivers/OLED_Software_I2C|Drivers/MPU6050|Drivers/OLED_Hardware_I2C" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                     </sourceEntries>
                 </configuration>
             </storageModule>
