@@ -9,11 +9,10 @@
  */
  
 #ifndef __OLED_H
-#define __OLED_H			  	 
+#define __OLED_H
+
 #include "ti_msp_dl_config.h"
-// #define  u8 unsigned char 
-// #define  u16 unsigned int
-// #define  u32 unsigned int
+
 #define OLED_CMD  0	//写命令
 #define OLED_DATA 1	//写数据
 
@@ -41,8 +40,5 @@ void OLED_ShowString(uint8_t x,uint8_t y,uint8_t *chr,uint8_t sizey);
 void OLED_ShowChinese(uint8_t x,uint8_t y,uint8_t no,uint8_t sizey);
 void OLED_DrawBMP(uint8_t x,uint8_t y,uint8_t sizex, uint8_t sizey,uint8_t BMP[]);
 void OLED_Init(void);
-#endif  
-	 
 
-
-
+#endif /* #ifndef __OLED_H */

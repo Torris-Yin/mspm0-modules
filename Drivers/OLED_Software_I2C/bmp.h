@@ -1,5 +1,6 @@
 #ifndef __BMP_H
 #define __BMP_H
+
 #include "ti_msp_dl_config.h"
 
 unsigned char BMP1[] =
@@ -71,9 +72,3 @@ unsigned char BMP1[] =
 };
 
 #endif
-
-
-
-
-
-
