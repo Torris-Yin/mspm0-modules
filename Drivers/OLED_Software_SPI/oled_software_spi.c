@@ -1,4 +1,4 @@
-#include "oled.h"
+#include "oled_software_spi.h"
 #include "oledfont.h"
 #include "clock.h"
 
