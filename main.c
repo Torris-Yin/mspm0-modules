@@ -31,10 +31,7 @@
  */
 
 #include "ti_msp_dl_config.h"
-#include "clock.h"
-#include "mpu6050.h"
-#include "oled.h"
-#include "stdio.h"
+#include "main.h"
 
 int main(void)
 {
@@ -44,7 +41,8 @@ int main(void)
     // MPU6050_Init();
     // OLED_Init();
 
-    while (1) {
+    while (1) 
+    {
         
     }
 }
