@@ -8,8 +8,8 @@
  *     5. Set the pins according to your needs.
  */
  
-#ifndef __OLED_H
-#define __OLED_H
+#ifndef __OLED_HARDWARE_I2C_H
+#define __OLED_HARDWARE_I2C_H
 
 #include "ti_msp_dl_config.h"
 
@@ -25,7 +25,7 @@
 #endif			   
 
 //OLED控制用函数
-void delay_ms(unsigned long ms);
+void delay_ms(uint32_t ms);
 void OLED_ColorTurn(uint8_t i);
 void OLED_DisplayTurn(uint8_t i);
 void OLED_WR_Byte(uint8_t dat,uint8_t cmd);
@@ -41,4 +41,4 @@ void OLED_ShowChinese(uint8_t x,uint8_t y,uint8_t no,uint8_t sizey);
 void OLED_DrawBMP(uint8_t x,uint8_t y,uint8_t sizex, uint8_t sizey,uint8_t BMP[]);
 void OLED_Init(void);
 
-#endif /* #ifndef __OLED_H */
+#endif /* #ifndef __OLED_HARDWARE_I2C_H */
