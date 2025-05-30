@@ -1,5 +1,7 @@
 #include "oled.h"
-#include "oledfont.h"  	 
+#include "oledfont.h" 
+#include "clock.h"
+
 //OLED的显存
 //存放格式如下.
 //[0]0 1 2 3 ... 127	
@@ -9,18 +11,13 @@
 //[4]0 1 2 3 ... 127	
 //[5]0 1 2 3 ... 127	
 //[6]0 1 2 3 ... 127	
-//[7]0 1 2 3 ... 127 			   
-void delay_ms(unsigned int ms)
-{                         
-  unsigned int a;
-  while(ms)
-  {
-    a=1800;
-    while(a--);
-    ms--;
-  }
-  return;
+//[7]0 1 2 3 ... 127
+
+void delay_ms(unsigned long ms) 
+{
+    mspm0_delay_ms(ms);
 }
+
 //反显函数
 void OLED_ColorTurn(unsigned char i)
 {
@@ -49,7 +46,6 @@ void OLED_DisplayTurn(unsigned char i)
   }
 }
 
-
 void OLED_WR_Byte(unsigned char dat,unsigned char cmd)
 {	
   unsigned char i;			  
@@ -77,13 +73,13 @@ void OLED_WR_Byte(unsigned char dat,unsigned char cmd)
 } 
 
 //坐标设置
-
 void OLED_Set_Pos(unsigned char x, unsigned char y) 
 { 
   OLED_WR_Byte(0xb0+y,OLED_CMD);
   OLED_WR_Byte(((x&0xf0)>>4)|0x10,OLED_CMD);
   OLED_WR_Byte((x&0x0f),OLED_CMD);
-}   	  
+}
+
 //开启OLED显示    
 void OLED_Display_On(void)
 {
@@ -91,13 +87,15 @@ void OLED_Display_On(void)
   OLED_WR_Byte(0X14,OLED_CMD);  //DCDC ON
   OLED_WR_Byte(0XAF,OLED_CMD);  //DISPLAY ON
 }
+
 //关闭OLED显示     
 void OLED_Display_Off(void)
 {
   OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC命令
   OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
   OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
-}		   			 
+}
+
 //清屏函数,清完屏,整个屏幕是黑色的!和没点亮一样!!!	  
 void OLED_Clear(void)  
 {  
@@ -132,13 +130,15 @@ void OLED_ShowChar(unsigned char x,unsigned char y,unsigned char chr,unsigned ch
     else return;
   }
 }
+
 //m^n函数
 unsigned int oled_pow(unsigned char m,unsigned char n)
 {
   unsigned int result=1;	 
   while(n--)result*=m;    
   return result;
-}				  
+}
+
 //显示数字
 //x,y :起点坐标
 //num:要显示的数字
@@ -163,6 +163,7 @@ void OLED_ShowNum(unsigned char x,unsigned char y,unsigned int num,unsigned char
     OLED_ShowChar(x+(sizey/2+m)*t,y,temp+'0',sizey);
   }
 }
+
 //显示一个字符号串
 void OLED_ShowString(unsigned char x,unsigned char y,unsigned char *chr,unsigned char sizey)
 {
@@ -174,6 +175,7 @@ void OLED_ShowString(unsigned char x,unsigned char y,unsigned char *chr,unsigned
     else x+=sizey/2;
   }
 }
+
 //显示汉字
 void OLED_ShowChinese(unsigned char x,unsigned char y,unsigned char no,unsigned char sizey)
 {
@@ -186,7 +188,6 @@ void OLED_ShowChinese(unsigned char x,unsigned char y,unsigned char no,unsigned 
     else return;
   }				
 }
-
 
 //显示图片
 //x,y显示坐标
@@ -206,8 +207,6 @@ void OLED_DrawBMP(unsigned char x,unsigned char y,unsigned char sizex, unsigned 
     }
   }
 } 
-
-
 
 //初始化SSD1306					    
 void OLED_Init(void)
@@ -246,4 +245,3 @@ void OLED_Init(void)
   OLED_Clear();
   OLED_WR_Byte(0xAF,OLED_CMD); /*display ON*/ 
 }  
-
