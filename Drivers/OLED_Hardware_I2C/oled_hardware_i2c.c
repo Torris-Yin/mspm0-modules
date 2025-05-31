@@ -109,7 +109,7 @@ void OLED_Display_Off(void)
     OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
     OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
 }
-   			 
+	 
 //清屏函数,清完屏,整个屏幕是黑色的!和没点亮一样!!!	  
 void OLED_Clear(void)  
 {  
@@ -220,7 +220,7 @@ void OLED_DrawBMP(uint8_t x,uint8_t y,uint8_t sizex, uint8_t sizey,uint8_t BMP[]
             OLED_WR_Byte(BMP[j++],OLED_DATA);	    	
         }
     }
-} 
+}
 
 //初始化SSD1306					    
 void OLED_Init(void)
@@ -257,4 +257,3 @@ void OLED_Init(void)
     OLED_Clear();
     OLED_WR_Byte(0xAF,OLED_CMD); /*display ON*/ 
 }  
-

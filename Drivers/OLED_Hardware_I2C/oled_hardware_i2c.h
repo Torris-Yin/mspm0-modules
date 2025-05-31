@@ -22,7 +22,7 @@
 
 #ifndef GPIO_OLED_PIN_SDA_PORT
 #define GPIO_OLED_PIN_SDA_PORT GPIO_OLED_PORT 
-#endif			   
+#endif
 
 //OLED控制用函数
 void delay_ms(uint32_t ms);

@@ -154,11 +154,11 @@ void OLED_ShowNum(uint8_t x,uint8_t y,uint32_t num,uint8_t len,uint8_t sizey)
         temp=(num/oled_pow(10,len-t-1))%10;
         if(enshow==0&&t<(len-1))
         {
-        if(temp==0)
-        {
-            OLED_ShowChar(x+(sizey/2+m)*t,y,' ',sizey);
-            continue;
-        }else enshow=1;
+            if(temp==0)
+            {
+                OLED_ShowChar(x+(sizey/2+m)*t,y,' ',sizey);
+                continue;
+            }else enshow=1;
         }
         OLED_ShowChar(x+(sizey/2+m)*t,y,temp+'0',sizey);
     }
@@ -203,10 +203,10 @@ void OLED_DrawBMP(uint8_t x,uint8_t y,uint8_t sizex, uint8_t sizey,uint8_t BMP[]
         OLED_Set_Pos(x,i+y);
         for(m=0;m<sizex;m++)
         {      
-        OLED_WR_Byte(BMP[j++],OLED_DATA);	    	
+            OLED_WR_Byte(BMP[j++],OLED_DATA);	    	
         }
     }
-} 
+}
 
 //初始化SSD1306					    
 void OLED_Init(void)
