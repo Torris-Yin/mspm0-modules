@@ -16,14 +16,6 @@
 #define OLED_CMD  0	//写命令
 #define OLED_DATA 1	//写数据
 
-#ifndef GPIO_OLED_PIN_SCL_PORT
-#define GPIO_OLED_PIN_SCL_PORT GPIO_OLED_PORT 
-#endif
-
-#ifndef GPIO_OLED_PIN_SDA_PORT
-#define GPIO_OLED_PIN_SDA_PORT GPIO_OLED_PORT 
-#endif
-
 //OLED控制用函数
 void delay_ms(uint32_t ms);
 void OLED_ColorTurn(uint8_t i);
