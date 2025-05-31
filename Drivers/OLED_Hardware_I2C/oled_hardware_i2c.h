@@ -4,7 +4,7 @@
  *     1. Add an I2C module.
  *     2. Name it as "I2C_OLED".
  *     3. Check the box "Enable Controller Mode".
- *     4. Set Standard Bus Speed to "Fast Mode (400kHz)". (optional)
+ *     4. Set "Standard Bus Speed" to "Fast Mode (400kHz)". (optional)
  *     5. Set the pins according to your needs.
  */
  
