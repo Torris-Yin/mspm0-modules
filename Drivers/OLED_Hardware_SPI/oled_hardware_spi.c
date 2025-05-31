@@ -47,7 +47,9 @@ void OLED_DisplayTurn(uint8_t i)
 }
 
 void OLED_WR_Byte(uint8_t dat,uint8_t cmd)
-{	
+{
+    while (DL_SPI_isBusy(SPI_OLED_INST));
+
     if(cmd)
         DL_SPI_setControllerCommandDataModeConfig(SPI_OLED_INST, DL_SPI_CD_MODE_DATA);
     else
