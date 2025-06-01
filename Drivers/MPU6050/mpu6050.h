@@ -23,6 +23,7 @@
 void MPU6050_Init(void);
 int Read_Quad(void);
 
+extern short gyro[3], accel[3];
 extern float pitch, roll, yaw;
 
 #endif  /* #ifndef _MPU6050_H_ */
