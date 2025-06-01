@@ -22,7 +22,7 @@
 #define NO_MOTION       (1)
 
 /* Starting sampling rate. */
-#define DEFAULT_MPU_HZ  (20)
+#define DEFAULT_MPU_HZ  (50)
 
 #define FLASH_SIZE      (512)
 #define FLASH_MEM_START ((void*)0x1800)
