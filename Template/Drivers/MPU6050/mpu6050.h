@@ -11,10 +11,11 @@
  *     2. Name the group as "GPIO_MPU6050".
  *     3. Name the pin as "PIN_INT".
  *     4. Set Direction to "Input".
- *     5. Check the box "Enable Interrupts".
- *     6. Set "Interrupt Priority" to "Level 1 - High" or lower.
- *     7. Set "Trigger Polarity" to "Trigger on Rising Edge".
- *     8. Set the pin according to your needs.
+ *     5. Set "Internal Resistor" to "Pull-Up Resistor".
+ *     6. Check the box "Enable Interrupts".
+ *     7. Set "Interrupt Priority" to "Level 1 - High" or lower.
+ *     8. Set "Trigger Polarity" to "Trigger on Falling Edge".
+ *     9. Set the pin according to your needs.
  */
 
 #ifndef _MPU6050_H_
