@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "mpu6050.h"
+#include "mspm0_i2c.h"
 
 /* Data requested by client. */
 #define PRINT_ACCEL     (0x01)
@@ -125,9 +126,12 @@ void MPU6050_Init(void)
     unsigned char accel_fsr;
     unsigned short gyro_rate, gyro_fsr;
 
+    if(DL_I2C_getSDAStatus(I2C_MPU6050_INST) == DL_I2C_CONTROLLER_SDA_LOW)
+        mpu6050_i2c_sda_unlock();
+
     result = mpu_init();
     if (result)
-        __BKPT();
+        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
     /* Get/set hardware configuration. Start gyro. */
     /* Wake up all sensors. */
