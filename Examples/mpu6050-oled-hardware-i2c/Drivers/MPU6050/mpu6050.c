@@ -133,16 +133,17 @@ void MPU6050_Init(void)
     if (result)
         DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
+    result = 0;
     /* Get/set hardware configuration. Start gyro. */
     /* Wake up all sensors. */
-    mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    result += mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
     /* Push both gyro and accel data into the FIFO. */
-    mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
-    mpu_set_sample_rate(DEFAULT_MPU_HZ);
+    result += mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    result += mpu_set_sample_rate(DEFAULT_MPU_HZ);
     /* Read back configuration in case it was set improperly. */
-    mpu_get_sample_rate(&gyro_rate);
-    mpu_get_gyro_fsr(&gyro_fsr);
-    mpu_get_accel_fsr(&accel_fsr);
+    result += mpu_get_sample_rate(&gyro_rate);
+    result += mpu_get_gyro_fsr(&gyro_fsr);
+    result += mpu_get_accel_fsr(&accel_fsr);
 
     /* Initialize HAL state variables. */
     memset(&hal, 0, sizeof(hal));
@@ -179,18 +180,21 @@ void MPU6050_Init(void)
      * DMP_FEATURE_SEND_CAL_GYRO: Add calibrated gyro data to the FIFO. Cannot
      * be used in combination with DMP_FEATURE_SEND_RAW_GYRO.
      */
-    dmp_load_motion_driver_firmware();
-    dmp_set_orientation(
+    result += dmp_load_motion_driver_firmware();
+    result += dmp_set_orientation(
         inv_orientation_matrix_to_scalar(gyro_orientation));
-    dmp_register_tap_cb(tap_cb);
-    dmp_register_android_orient_cb(android_orient_cb);
+    result += dmp_register_tap_cb(tap_cb);
+    result += dmp_register_android_orient_cb(android_orient_cb);
     hal.dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
         DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
         DMP_FEATURE_GYRO_CAL;
-    dmp_enable_feature(hal.dmp_features);
-    dmp_set_fifo_rate(DEFAULT_MPU_HZ);
-    mpu_set_dmp_state(1);
+    result += dmp_enable_feature(hal.dmp_features);
+    result += dmp_set_fifo_rate(DEFAULT_MPU_HZ);
+    result += mpu_set_dmp_state(1);
     hal.dmp_on = 1;
+
+    if (result)
+        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
     NVIC_EnableIRQ(GPIO_MPU6050_INT_IRQN);
 }
