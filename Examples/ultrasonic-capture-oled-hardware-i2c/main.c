@@ -54,6 +54,5 @@ int main(void)
         distVal = Read_Ultrasonic();
         sprintf((char *)oled_buffer, "%4u", distVal);
         OLED_ShowString(6*8,0,oled_buffer,16);
-        mspm0_delay_ms(200);
     }
 }
