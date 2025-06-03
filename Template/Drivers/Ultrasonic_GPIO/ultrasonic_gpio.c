@@ -1,4 +1,4 @@
-#include "ultrasonic.h"
+#include "ultrasonic_gpio.h"
 #include "clock.h"
 
 #define ULTRASONIC_TIMEOUT_MS  (10)

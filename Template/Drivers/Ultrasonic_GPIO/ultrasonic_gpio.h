@@ -15,8 +15,8 @@
  *     6. Choose the timer according to your needs.
  */
 
-#ifndef __ULTRASONIC_H
-#define __ULTRASONIC_H
+#ifndef __ULTRASONIC_GPIO_H
+#define __ULTRASONIC_GPIO_H
 
 #include "ti_msp_dl_config.h"
 
@@ -31,4 +31,4 @@
 void Ultrasonic_Init(void);
 uint16_t Read_Ultrasonic(void);
 
-#endif /* #ifndef __ULTRASONIC_H */
+#endif /* #ifndef __ULTRASONIC_GPIO_H */
