@@ -13,11 +13,13 @@ void SysTick_Handler(void)
 void UART_BNO08X_INST_IRQHandler(void)
 {
     uint8_t checkSum = 0;
-    extern uint8_t dmaBuffer[64];
+    extern uint8_t dmaBuffer[19];
 
     DL_DMA_disableChannel(DMA, DMA_CH0_CHAN_ID);
-    uint8_t rxSize = 63 - DL_DMA_getTransferSize(DMA, DMA_CH0_CHAN_ID);
-    dmaBuffer[rxSize++] = DL_UART_receiveData(UART_BNO08X_INST);
+    uint8_t rxSize = 18 - DL_DMA_getTransferSize(DMA, DMA_CH0_CHAN_ID);
+
+    if(DL_UART_isRXFIFOEmpty(UART_BNO08X_INST) == false)
+        dmaBuffer[rxSize++] = DL_UART_receiveData(UART_BNO08X_INST);
 
     for(int i=2; i<=14; i++)
         checkSum += dmaBuffer[i];
@@ -37,7 +39,7 @@ void UART_BNO08X_INST_IRQHandler(void)
     DL_UART_drainRXFIFO(UART_BNO08X_INST, dummy, 4);
 
     DL_DMA_setDestAddr(DMA, DMA_CH0_CHAN_ID, (uint32_t) &dmaBuffer[0]);
-    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 63);
+    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 18);
     DL_DMA_enableChannel(DMA, DMA_CH0_CHAN_ID);
 }
 #endif
