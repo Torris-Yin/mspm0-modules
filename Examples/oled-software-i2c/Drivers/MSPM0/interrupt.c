@@ -16,7 +16,7 @@ void UART_BNO08X_INST_IRQHandler(void)
     extern uint8_t dmaBuffer[64];
 
     DL_DMA_disableChannel(DMA, DMA_CH0_CHAN_ID);
-    uint8_t rxSize = 64 - DL_DMA_getTransferSize(DMA, DMA_CH0_CHAN_ID);
+    uint8_t rxSize = 63 - DL_DMA_getTransferSize(DMA, DMA_CH0_CHAN_ID);
     dmaBuffer[rxSize++] = DL_UART_receiveData(UART_BNO08X_INST);
 
     for(int i=2; i<=14; i++)
@@ -33,8 +33,11 @@ void UART_BNO08X_INST_IRQHandler(void)
         bno08x_data.az = (dmaBuffer[14]<<8)|dmaBuffer[13];
     }
     
+    uint8_t dummy[4];
+    DL_UART_drainRXFIFO(UART_BNO08X_INST, dummy, 4);
+
     DL_DMA_setDestAddr(DMA, DMA_CH0_CHAN_ID, (uint32_t) &dmaBuffer[0]);
-    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 64);
+    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 63);
     DL_DMA_enableChannel(DMA, DMA_CH0_CHAN_ID);
 }
 #endif
