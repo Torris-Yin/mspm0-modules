@@ -3,6 +3,7 @@
 #include "clock.h"
 #include "mpu6050.h"
 #include "bno08x_uart_rvc.h"
+#include "wit.h"
 
 void SysTick_Handler(void)
 {
@@ -13,34 +14,85 @@ void SysTick_Handler(void)
 void UART_BNO08X_INST_IRQHandler(void)
 {
     uint8_t checkSum = 0;
-    extern uint8_t dmaBuffer[19];
+    extern uint8_t bno08x_dmaBuffer[19];
 
-    DL_DMA_disableChannel(DMA, DMA_CH0_CHAN_ID);
-    uint8_t rxSize = 18 - DL_DMA_getTransferSize(DMA, DMA_CH0_CHAN_ID);
+    DL_DMA_disableChannel(DMA, DMA_BNO08X_CHAN_ID);
+    uint8_t rxSize = 18 - DL_DMA_getTransferSize(DMA, DMA_BNO08X_CHAN_ID);
 
     if(DL_UART_isRXFIFOEmpty(UART_BNO08X_INST) == false)
-        dmaBuffer[rxSize++] = DL_UART_receiveData(UART_BNO08X_INST);
+        bno08x_dmaBuffer[rxSize++] = DL_UART_receiveData(UART_BNO08X_INST);
 
     for(int i=2; i<=14; i++)
-        checkSum += dmaBuffer[i];
+        checkSum += bno08x_dmaBuffer[i];
 
-    if((rxSize == 19) && (dmaBuffer[0] == 0xAA) && (dmaBuffer[1] == 0xAA) && (checkSum == dmaBuffer[18]))
+    if((rxSize == 19) && (bno08x_dmaBuffer[0] == 0xAA) && (bno08x_dmaBuffer[1] == 0xAA) && (checkSum == bno08x_dmaBuffer[18]))
     {
-        bno08x_data.index = dmaBuffer[2];
-        bno08x_data.yaw = (int16_t)((dmaBuffer[4]<<8)|dmaBuffer[3]) / 100.0;
-        bno08x_data.pitch = (int16_t)((dmaBuffer[6]<<8)|dmaBuffer[5]) / 100.0;
-        bno08x_data.roll = (int16_t)((dmaBuffer[8]<<8)|dmaBuffer[7]) / 100.0;
-        bno08x_data.ax = (dmaBuffer[10]<<8)|dmaBuffer[9];
-        bno08x_data.ay = (dmaBuffer[12]<<8)|dmaBuffer[11];
-        bno08x_data.az = (dmaBuffer[14]<<8)|dmaBuffer[13];
+        bno08x_data.index = bno08x_dmaBuffer[2];
+        bno08x_data.yaw = (int16_t)((bno08x_dmaBuffer[4]<<8)|bno08x_dmaBuffer[3]) / 100.0;
+        bno08x_data.pitch = (int16_t)((bno08x_dmaBuffer[6]<<8)|bno08x_dmaBuffer[5]) / 100.0;
+        bno08x_data.roll = (int16_t)((bno08x_dmaBuffer[8]<<8)|bno08x_dmaBuffer[7]) / 100.0;
+        bno08x_data.ax = (bno08x_dmaBuffer[10]<<8)|bno08x_dmaBuffer[9];
+        bno08x_data.ay = (bno08x_dmaBuffer[12]<<8)|bno08x_dmaBuffer[11];
+        bno08x_data.az = (bno08x_dmaBuffer[14]<<8)|bno08x_dmaBuffer[13];
     }
     
     uint8_t dummy[4];
     DL_UART_drainRXFIFO(UART_BNO08X_INST, dummy, 4);
 
-    DL_DMA_setDestAddr(DMA, DMA_CH0_CHAN_ID, (uint32_t) &dmaBuffer[0]);
-    DL_DMA_setTransferSize(DMA, DMA_CH0_CHAN_ID, 18);
-    DL_DMA_enableChannel(DMA, DMA_CH0_CHAN_ID);
+    DL_DMA_setDestAddr(DMA, DMA_BNO08X_CHAN_ID, (uint32_t) &bno08x_dmaBuffer[0]);
+    DL_DMA_setTransferSize(DMA, DMA_BNO08X_CHAN_ID, 18);
+    DL_DMA_enableChannel(DMA, DMA_BNO08X_CHAN_ID);
+}
+#endif
+
+#if defined UART_WIT_INST_IRQHandler
+void UART_WIT_INST_IRQHandler(void)
+{
+    uint8_t checkSum[3] = {0, 0, 0};
+    extern uint8_t wit_dmaBuffer[33];
+
+    DL_DMA_disableChannel(DMA, DMA_WIT_CHAN_ID);
+    uint8_t rxSize = 32 - DL_DMA_getTransferSize(DMA, DMA_WIT_CHAN_ID);
+
+    if(DL_UART_isRXFIFOEmpty(UART_WIT_INST) == false)
+        wit_dmaBuffer[rxSize++] = DL_UART_receiveData(UART_WIT_INST);
+
+    for(int i=0; i<=2; i++)
+        for(int j=i*11; j<(i+1)*11-1; j++)
+            checkSum[i] += wit_dmaBuffer[j];
+
+    if(rxSize == 33)
+    {
+        if((wit_dmaBuffer[0] == 0x55) && (wit_dmaBuffer[1] == 0x51) && (checkSum[0] == wit_dmaBuffer[10]))
+        {
+            wit_data.ax = (int16_t)((wit_dmaBuffer[3]<<8)|wit_dmaBuffer[2]) / 2.048; //mg
+            wit_data.ay = (int16_t)((wit_dmaBuffer[5]<<8)|wit_dmaBuffer[4]) / 2.048; //mg
+            wit_data.az = (int16_t)((wit_dmaBuffer[7]<<8)|wit_dmaBuffer[6]) / 2.048; //mg
+            wit_data.temperature =  (int16_t)((wit_dmaBuffer[9]<<8)|wit_dmaBuffer[8]) / 100.0; //°C
+        }
+
+        if((wit_dmaBuffer[11] == 0x55) && (wit_dmaBuffer[12] == 0x52) && (checkSum[1] == wit_dmaBuffer[21]))
+        {
+            wit_data.gx = (int16_t)((wit_dmaBuffer[14]<<8)|wit_dmaBuffer[13]) / 16.384; //°/S
+            wit_data.gy = (int16_t)((wit_dmaBuffer[16]<<8)|wit_dmaBuffer[15]) / 16.384; //°/S
+            wit_data.gz = (int16_t)((wit_dmaBuffer[18]<<8)|wit_dmaBuffer[17]) / 16.384; //°/S
+        }
+
+        if((wit_dmaBuffer[22] == 0x55) && (wit_dmaBuffer[23] == 0x53) && (checkSum[2] == wit_dmaBuffer[32]))
+        {
+            wit_data.roll  = (int16_t)((wit_dmaBuffer[25]<<8)|wit_dmaBuffer[24]) / 32768.0 * 180.0; //°
+            wit_data.pitch = (int16_t)((wit_dmaBuffer[27]<<8)|wit_dmaBuffer[26]) / 32768.0 * 180.0; //°
+            wit_data.yaw   = (int16_t)((wit_dmaBuffer[29]<<8)|wit_dmaBuffer[28]) / 32768.0 * 180.0; //°
+            wit_data.version = (int16_t)((wit_dmaBuffer[31]<<8)|wit_dmaBuffer[30]);
+        }
+    }
+    
+    uint8_t dummy[4];
+    DL_UART_drainRXFIFO(UART_WIT_INST, dummy, 4);
+
+    DL_DMA_setDestAddr(DMA, DMA_WIT_CHAN_ID, (uint32_t) &wit_dmaBuffer[0]);
+    DL_DMA_setTransferSize(DMA, DMA_WIT_CHAN_ID, 32);
+    DL_DMA_enableChannel(DMA, DMA_WIT_CHAN_ID);
 }
 #endif
 
