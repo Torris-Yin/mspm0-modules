@@ -11,5 +11,6 @@
 #include "ultrasonic_capture.h"
 #include "ultrasonic_gpio.h"
 #include "bno08x_uart_rvc.h"
+#include "wit.h"
 
 #endif  /* #ifndef _MAIN_H_ */

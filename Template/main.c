@@ -42,6 +42,7 @@ int main(void)
     // OLED_Init();
     // Ultrasonic_Init();
     // BNO08X_Init();
+    // WIT_Init();
 
     while (1) 
     {
