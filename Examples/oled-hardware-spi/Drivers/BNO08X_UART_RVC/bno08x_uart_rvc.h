@@ -9,9 +9,10 @@
  *     6. Set "RX Timeout Interrupt Counts" to "1".
  *     7. Check the "RX timeout" box at "Enable Interrupts".
  *     8. Set "Configure DMA RX Trigger" to "UART RX interrupt".
- *     9. Set "Address Mode" to "Fixed addr. to Block addr.".
- *     10. Set "Source Length" and "Destination Length" to "Byte".
- *     11. Set the pin according to your needs.
+ *     9. Set "DMA Channel RX Name" to "DMA_BNO08X".
+ *     10. Set "Address Mode" to "Fixed addr. to Block addr.".
+ *     11. Set "Source Length" and "Destination Length" to "Byte".
+ *     12. Set the pin according to your needs.
  */
 
 #ifndef _BNO08X_UART_RVC_H_
