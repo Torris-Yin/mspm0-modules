@@ -196,7 +196,8 @@ void MPU6050_Init(void)
     if (result)
         DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
-    NVIC_EnableIRQ(GPIO_MPU6050_INT_IRQN);
+    /* Enable INT_GROUP1 handler. */
+    NVIC_EnableIRQ(1);
 }
 
 int Read_Quad(void)
