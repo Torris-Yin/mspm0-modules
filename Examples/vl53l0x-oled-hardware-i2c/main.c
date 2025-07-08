@@ -33,20 +33,30 @@
 #include "ti_msp_dl_config.h"
 #include "main.h"
 
+uint8_t oled_buffer[32];
+
 int main(void)
 {
     SYSCFG_DL_init();
     SysTick_Init();
 
     // MPU6050_Init();
-    // OLED_Init();
+    OLED_Init();
     // Ultrasonic_Init();
     // BNO08X_Init();
     // WIT_Init();
-    // VL53L0X_Init();
+    VL53L0X_Init();
+
+    OLED_ShowString(56,7,(uint8_t *)"VL53L0X Demo",8);
+
+    OLED_ShowString(0,0,(uint8_t *)"Dist:",16);
+    OLED_ShowString(0,2,(uint8_t *)"Status:",16);
 
     while (1) 
     {
-        
+        sprintf((char *)oled_buffer, "%-4u", RangingMeasurementData.RangeMilliMeter);
+        OLED_ShowString(6*8,0,oled_buffer,16);
+        sprintf((char *)oled_buffer, "%u", RangingMeasurementData.RangeStatus);
+        OLED_ShowString(8*8,2,oled_buffer,16);
     }
 }
