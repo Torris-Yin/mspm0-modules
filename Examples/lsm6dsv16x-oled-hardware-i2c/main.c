@@ -33,21 +33,51 @@
 #include "ti_msp_dl_config.h"
 #include "main.h"
 
+uint8_t oled_buffer[32];
+
 int main(void)
 {
     SYSCFG_DL_init();
     SysTick_Init();
 
     // MPU6050_Init();
-    // OLED_Init();
+    OLED_Init();
     // Ultrasonic_Init();
     // BNO08X_Init();
     // WIT_Init();
     // VL53L0X_Init();
-    // LSM6DSV16X_Init();
+    LSM6DSV16X_Init();
+
+    OLED_ShowString(0,7,(uint8_t *)"LSM6DSV16X Demo",8);
+
+    OLED_ShowString(0,0,(uint8_t *)"Pitch",8);
+    OLED_ShowString(0,2,(uint8_t *)" Roll",8);
+    OLED_ShowString(0,4,(uint8_t *)"  Yaw",8);
+
+    OLED_ShowString(16*6,3,(uint8_t *)"Accel",8);
+    OLED_ShowString(17*6,4,(uint8_t *)"Gyro",8);
 
     while (1) 
     {
-        
+        sprintf((char *)oled_buffer, "%-6.1f", pitch);
+        OLED_ShowString(5*8,0,oled_buffer,16);
+        sprintf((char *)oled_buffer, "%-6.1f", roll);
+        OLED_ShowString(5*8,2,oled_buffer,16);
+        sprintf((char *)oled_buffer, "%-6.1f", yaw);
+        OLED_ShowString(5*8,4,oled_buffer,16);
+
+        sprintf((char *)oled_buffer, "%6d", accel[0]);
+        OLED_ShowString(15*6,0,oled_buffer,8);
+        sprintf((char *)oled_buffer, "%6d", accel[1]);
+        OLED_ShowString(15*6,1,oled_buffer,8);
+        sprintf((char *)oled_buffer, "%6d", accel[2]);
+        OLED_ShowString(15*6,2,oled_buffer,8);
+
+        sprintf((char *)oled_buffer, "%6d", gyro[0]);
+        OLED_ShowString(15*6,5,oled_buffer,8);
+        sprintf((char *)oled_buffer, "%6d", gyro[1]);
+        OLED_ShowString(15*6,6,oled_buffer,8);
+        sprintf((char *)oled_buffer, "%6d", gyro[2]);
+        OLED_ShowString(15*6,7,oled_buffer,8);
     }
 }
