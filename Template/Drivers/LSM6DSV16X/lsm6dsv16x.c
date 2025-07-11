@@ -5,9 +5,11 @@
 #include "clock.h"
 #include "string.h"
 
-#define BOOT_TIME         10
-#define I2C_TIMEOUT_MS    10
+#define BOOT_TIME         (10)
+#define I2C_TIMEOUT_MS    (10)
 #define RAD_TO_DEG        (180.0f / M_PI)
+
+#define LSM6DSV16X_ADDR   (0x6A)
 
 static uint8_t whoamI;
 static lsm6dsv16x_fifo_sflp_raw_t fifo_sflp;
@@ -260,7 +262,7 @@ static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, ui
 
     while (!(DL_I2C_getControllerStatus(I2C_LSM6DSV16X_INST) & DL_I2C_CONTROLLER_STATUS_IDLE));
 
-    DL_I2C_startControllerTransfer(I2C_LSM6DSV16X_INST, 0x6B, DL_I2C_CONTROLLER_DIRECTION_TX, len+1);
+    DL_I2C_startControllerTransfer(I2C_LSM6DSV16X_INST, LSM6DSV16X_ADDR, DL_I2C_CONTROLLER_DIRECTION_TX, len+1);
 
     do {
         unsigned fillcnt;
@@ -305,7 +307,7 @@ static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t 
 
     while (!(DL_I2C_getControllerStatus(I2C_LSM6DSV16X_INST) & DL_I2C_CONTROLLER_STATUS_IDLE));
 
-    DL_I2C_startControllerTransfer(I2C_LSM6DSV16X_INST, 0x6B, DL_I2C_CONTROLLER_DIRECTION_RX, len);
+    DL_I2C_startControllerTransfer(I2C_LSM6DSV16X_INST, LSM6DSV16X_ADDR, DL_I2C_CONTROLLER_DIRECTION_RX, len);
 
     do {
         if (!DL_I2C_isControllerRXFIFOEmpty(I2C_LSM6DSV16X_INST))
