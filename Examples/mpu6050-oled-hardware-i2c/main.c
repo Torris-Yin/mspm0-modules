@@ -44,6 +44,9 @@ int main(void)
     MPU6050_Init();
     OLED_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     OLED_ShowString(0,7,(uint8_t *)"MPU6050 Demo",8);
 
     OLED_ShowString(0,0,(uint8_t *)"Pitch",8);

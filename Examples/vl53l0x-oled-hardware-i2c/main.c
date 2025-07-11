@@ -47,6 +47,9 @@ int main(void)
     // WIT_Init();
     VL53L0X_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     OLED_ShowString(56,7,(uint8_t *)"VL53L0X Demo",8);
 
     OLED_ShowString(0,0,(uint8_t *)"Dist:",16);

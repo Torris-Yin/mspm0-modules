@@ -1,6 +1,7 @@
 #include "vl53l0x.h"
 #include "vl53l0x_api.h"
 #include "clock.h"
+#include "interrupt.h"
 
 typedef enum {
 	LONG_RANGE 		= 0, /*!< Long range mode */
@@ -90,7 +91,7 @@ void VL53L0X_Init(void)
         DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
     /* Enable INT_GROUP1 handler. */
-    NVIC_EnableIRQ(1);
+    enable_group1_irq = 1;
 
     VL53L0X_StartMeasurement(pDev);
 }

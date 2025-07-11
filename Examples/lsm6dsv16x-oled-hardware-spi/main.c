@@ -48,6 +48,9 @@ int main(void)
     // VL53L0X_Init();
     LSM6DSV16X_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     OLED_ShowString(0,7,(uint8_t *)"LSM6DSV16X Demo",8);
 
     OLED_ShowString(0,0,(uint8_t *)"Pitch",8);

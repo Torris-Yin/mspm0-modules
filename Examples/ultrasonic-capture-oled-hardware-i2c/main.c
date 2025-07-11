@@ -47,6 +47,9 @@ int main(void)
     OLED_Init();
     Ultrasonic_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     OLED_ShowString(0,0,(uint8_t *)"Dist:",16);
 
     while (1) 

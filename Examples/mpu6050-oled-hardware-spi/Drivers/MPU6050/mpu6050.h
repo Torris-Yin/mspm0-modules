@@ -13,7 +13,7 @@
  *     4. Set Direction to "Input".
  *     5. Set "Internal Resistor" to "Pull-Up Resistor".
  *     6. Check the box "Enable Interrupts".
- *     7. Set "Interrupt Priority" to "Level 1 - High" or lower.
+ *     7. Set "Interrupt Priority" to "Level 3 - Lowest".
  *     8. Set "Trigger Polarity" to "Trigger on Falling Edge".
  *     9. Set the pin according to your needs.
  */

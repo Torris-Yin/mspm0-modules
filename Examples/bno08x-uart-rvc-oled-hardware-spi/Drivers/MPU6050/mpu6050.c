@@ -10,6 +10,7 @@
 
 #include "mpu6050.h"
 #include "mspm0_i2c.h"
+#include "interrupt.h"
 
 /* Data requested by client. */
 #define PRINT_ACCEL     (0x01)
@@ -197,7 +198,7 @@ void MPU6050_Init(void)
         DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
 
     /* Enable INT_GROUP1 handler. */
-    NVIC_EnableIRQ(1);
+    enable_group1_irq = 1;
 }
 
 int Read_Quad(void)

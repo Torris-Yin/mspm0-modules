@@ -46,6 +46,9 @@ int main(void)
     // MPU6050_Init();
     OLED_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     while (1) 
     {
         OLED_ShowChinese(0,0,0,16);//中

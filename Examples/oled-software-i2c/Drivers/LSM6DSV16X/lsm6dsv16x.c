@@ -3,6 +3,7 @@
 
 #include "ti_msp_dl_config.h"
 #include "clock.h"
+#include "interrupt.h"
 #include "string.h"
 
 #define BOOT_TIME         (10)
@@ -143,7 +144,7 @@ void LSM6DSV16X_Init(void)
     lsm6dsv16x_data_ready_mode_set(&dev_ctx, LSM6DSV16X_DRDY_PULSED);
 
     /* Enable INT_GROUP1 handler. */
-    NVIC_EnableIRQ(1);
+    enable_group1_irq = 1;
 }
 
 void Read_LSM6DSV16X(void)
