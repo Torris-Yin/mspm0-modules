@@ -33,13 +33,13 @@ mux8.inputSelect = "HSCLKMUX_SYSPLL2X";
 
 GPIO1.$name                               = "GPIO_VL53L0X";
 GPIO1.associatedPins.create(2);
-GPIO1.associatedPins[0].$name             = "PIN_XSHUT";
+GPIO1.associatedPins[0].$name             = "PIN_VL53L0X_XSHUT";
 GPIO1.associatedPins[0].pin.$assign       = "PB9";
-GPIO1.associatedPins[1].$name             = "PIN_GPIO1";
 GPIO1.associatedPins[1].direction         = "INPUT";
 GPIO1.associatedPins[1].interruptEn       = true;
 GPIO1.associatedPins[1].interruptPriority = "3";
 GPIO1.associatedPins[1].polarity          = "FALL";
+GPIO1.associatedPins[1].$name             = "PIN_VL53L0X_GPIO1";
 GPIO1.associatedPins[1].pin.$assign       = "PA8";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);

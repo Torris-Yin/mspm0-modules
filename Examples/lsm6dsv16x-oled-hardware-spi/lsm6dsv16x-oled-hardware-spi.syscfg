@@ -34,17 +34,17 @@ const mux8       = system.clockTree["HSCLKMUX"];
 mux8.inputSelect = "HSCLKMUX_SYSPLL2X";
 
 GPIO1.$name                               = "GPIO_LSM6DSV16X";
-GPIO1.associatedPins[0].$name             = "PIN_INT";
 GPIO1.associatedPins[0].direction         = "INPUT";
 GPIO1.associatedPins[0].interruptEn       = true;
 GPIO1.associatedPins[0].interruptPriority = "3";
 GPIO1.associatedPins[0].polarity          = "RISE";
+GPIO1.associatedPins[0].$name             = "PIN_LSM6DSV16X_INT";
 GPIO1.associatedPins[0].pin.$assign       = "PB9";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
 GPIO2.$name                         = "GPIO_OLED";
-GPIO2.associatedPins[0].$name       = "PIN_RES";
+GPIO2.associatedPins[0].$name       = "PIN_OLED_RES";
 GPIO2.associatedPins[0].pin.$assign = "PB7";
 
 I2C1.$name                             = "I2C_LSM6DSV16X";

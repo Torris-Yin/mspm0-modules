@@ -105,42 +105,75 @@ void UART_WIT_INST_IRQHandler(void)
 void GROUP1_IRQHandler(void)
 {
     switch (DL_Interrupt_getPendingGroup(DL_INTERRUPT_GROUP_1)) {
-        /* MPU6050 INT */
-        #if defined GPIO_MPU6050_PORT
-            #if defined GPIO_MPU6050_INT_IIDX
+        #if defined GPIO_MULTIPLE_GPIOA_INT_IIDX
+        case GPIO_MULTIPLE_GPIOA_INT_IIDX:
+            switch (DL_GPIO_getPendingInterrupt(GPIOA))
+            {
+                #if (defined GPIO_MPU6050_PORT) && (GPIO_MPU6050_PORT == GPIOA)
+                case GPIO_MPU6050_PIN_MPU6050_INT_IIDX:
+                    Read_Quad();
+                    break;
+                #endif
+
+                #if (defined GPIO_LSM6DSV16X_PORT) && (GPIO_LSM6DSV16X_PORT == GPIOA)
+                case GPIO_LSM6DSV16X_PIN_LSM6DSV16X_INT_IIDX:
+                    Read_LSM6DSV16X();
+                    break;
+                #endif
+
+                #if (defined GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT) && (GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT == GPIOA)
+                case GPIO_VL53L0X_PIN_VL53L0X_GPIO1_IIDX:
+                    Read_VL53L0X();
+                    break;
+                #endif
+
+                default:
+                    break;
+            }
+        #endif
+
+        #if defined GPIO_MULTIPLE_GPIOB_INT_IIDX
+        case GPIO_MULTIPLE_GPIOB_INT_IIDX:
+            switch (DL_GPIO_getPendingInterrupt(GPIOB))
+            {
+                #if (defined GPIO_MPU6050_PORT) && (GPIO_MPU6050_PORT == GPIOB)
+                case GPIO_MPU6050_PIN_MPU6050_INT_IIDX:
+                    Read_Quad();
+                    break;
+                #endif
+
+                #if (defined GPIO_LSM6DSV16X_PORT) && (GPIO_LSM6DSV16X_PORT == GPIOB)
+                case GPIO_LSM6DSV16X_PIN_LSM6DSV16X_INT_IIDX:
+                    Read_LSM6DSV16X();
+                    break;
+                #endif
+
+                #if (defined GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT) && (GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT == GPIOB)
+                case GPIO_VL53L0X_PIN_VL53L0X_GPIO1_IIDX:
+                    Read_VL53L0X();
+                    break;
+                #endif
+
+                default:
+                    break;
+            }
+        #endif
+
+        #if defined GPIO_MPU6050_INT_IIDX
             case GPIO_MPU6050_INT_IIDX:
-            #elif (GPIO_MPU6050_PORT == GPIOA) && (defined GPIO_MULTIPLE_GPIOA_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOA_INT_IIDX:
-            #elif (GPIO_MPU6050_PORT == GPIOB) && (defined GPIO_MULTIPLE_GPIOB_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOB_INT_IIDX:
-            #endif
                 Read_Quad();
                 break;
         #endif
 
-        /* VL53L0X INT */
-        #if defined GPIO_VL53L0X_PIN_GPIO1_PORT
-            #if defined GPIO_VL53L0X_INT_IIDX
-            case GPIO_VL53L0X_INT_IIDX:
-            #elif (GPIO_VL53L0X_PIN_GPIO1_PORT == GPIOA) && (defined GPIO_MULTIPLE_GPIOA_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOA_INT_IIDX:
-            #elif (GPIO_VL53L0X_PIN_GPIO1_PORT == GPIOB) && (defined GPIO_MULTIPLE_GPIOB_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOB_INT_IIDX:
-            #endif
-                Read_VL53L0X();
+        #if defined GPIO_LSM6DSV16X_INT_IIDX
+            case GPIO_LSM6DSV16X_INT_IIDX:
+                Read_LSM6DSV16X();
                 break;
         #endif
 
-        /* LSM6DSV16X INT */
-        #if defined GPIO_LSM6DSV16X_PORT
-            #if defined GPIO_LSM6DSV16X_INT_IIDX
-            case GPIO_LSM6DSV16X_INT_IIDX:
-            #elif (GPIO_LSM6DSV16X_PORT == GPIOA) && (defined GPIO_MULTIPLE_GPIOA_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOA_INT_IIDX:
-            #elif (GPIO_LSM6DSV16X_PORT == GPIOB) && (defined GPIO_MULTIPLE_GPIOB_INT_IIDX)
-            case GPIO_MULTIPLE_GPIOB_INT_IIDX:
-            #endif
-                Read_LSM6DSV16X();
+        #if defined GPIO_VL53L0X_INT_IIDX
+            case GPIO_VL53L0X_INT_IIDX:
+                Read_VL53L0X();
                 break;
         #endif
     }

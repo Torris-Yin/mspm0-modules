@@ -47,6 +47,8 @@
                                 <option id="com.ti.ccstudio.buildDefinitions.TMS470_TICLANG_4.0.compilerID.INCLUDE_PATH.1250981215" superClass="com.ti.ccstudio.buildDefinitions.TMS470_TICLANG_4.0.compilerID.INCLUDE_PATH" valueType="includePath">
                                     <listOptionValue value="${COM_TI_MSPM0_SDK_INCLUDE_PATH}"/>
                                     <listOptionValue value="${SYSCONFIG_TOOL_INCLUDE_PATH}"/>
+                                    <listOptionValue value="${PROJECT_ROOT}/Drivers/LSM6DSV16X"/>
+                                    <listOptionValue value="${PROJECT_ROOT}/Drivers/VL53L0X"/>
                                     <listOptionValue value="${PROJECT_ROOT}/Drivers/WIT"/>
                                     <listOptionValue value="${PROJECT_ROOT}/Drivers/BNO08X_UART_RVC"/>
                                     <listOptionValue value="${PROJECT_ROOT}/Drivers/Ultrasonic_GPIO"/>
@@ -107,7 +109,7 @@
                         </toolChain>
                     </folderInfo>
                     <sourceEntries>
-                        <entry excluding="Drivers/OLED_Software_SPI|Drivers/BNO08X_UART_RVC|Drivers/Ultrasonic_GPIO|Drivers/Ultrasonic_Capture|Drivers/MPU6050|Drivers/OLED_Hardware_I2C|Drivers/OLED_Software_I2C" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="Drivers/LSM6DSV16X|Drivers/VL53L0X|Drivers/OLED_Hardware_I2C|Drivers/BNO08X_UART_RVC|Drivers/Ultrasonic_GPIO|Drivers/Ultrasonic_Capture|Drivers/MPU6050|Drivers/OLED_Software_SPI|Drivers/OLED_Software_I2C" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                     </sourceEntries>
                 </configuration>
             </storageModule>

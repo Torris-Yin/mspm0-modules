@@ -9,8 +9,8 @@
  *   GPIO:
  *     1. Add a GPIO module.
  *     2. Name the group as "GPIO_VL53L0X".
- *     3. Name the pins as "PIN_XSHUT" and "PIN_GPIO1".
- *     PIN_GPIO1:
+ *     3. Name the pins as "PIN_VL53L0X_XSHUT" and "PIN_VL53L0X_GPIO1".
+ *     PIN_VL53L0X_GPIO1:
  *       4. Set Direction to "Input".
  *       6. Check the box "Enable Interrupts".
  *       7. Set "Interrupt Priority" to "Level 3 - Lowest".
@@ -24,12 +24,12 @@
 #include "ti_msp_dl_config.h"
 #include "vl53l0x_api.h"
 
-#ifndef GPIO_VL53L0X_PIN_XSHUT_PORT
-#define GPIO_VL53L0X_PIN_XSHUT_PORT GPIO_VL53L0X_PORT 
+#ifndef GPIO_VL53L0X_PIN_VL53L0X_XSHUT_PORT
+#define GPIO_VL53L0X_PIN_VL53L0X_XSHUT_PORT GPIO_VL53L0X_PORT 
 #endif
 
-#ifndef GPIO_VL53L0X_PIN_GPIO1_PORT
-#define GPIO_VL53L0X_PIN_GPIO1_PORT GPIO_VL53L0X_PORT 
+#ifndef GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT
+#define GPIO_VL53L0X_PIN_VL53L0X_GPIO1_PORT GPIO_VL53L0X_PORT 
 #endif
 
 extern VL53L0X_RangingMeasurementData_t RangingMeasurementData;

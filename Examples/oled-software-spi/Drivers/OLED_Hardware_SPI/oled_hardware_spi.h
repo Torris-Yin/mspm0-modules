@@ -10,7 +10,7 @@
  *   GPIO:
  *     1. Add a GPIO module.
  *     2. Name the group as "GPIO_OLED".
- *     3. Name the pin as "PIN_RES".
+ *     3. Name the pin as "PIN_OLED_RES".
  *     4. Set the pin according to your needs.
  */
 
@@ -19,17 +19,17 @@
 
 #include "ti_msp_dl_config.h"
 
+#ifndef GPIO_OLED_PIN_OLED_RES_PORT
+#define GPIO_OLED_PIN_OLED_RES_PORT GPIO_OLED_PORT 
+#endif
+
 #define OLED_CMD  0	//写命令
 #define OLED_DATA 1	//写数据
 
-#ifndef GPIO_OLED_PIN_RES_PORT
-#define GPIO_OLED_PIN_RES_PORT GPIO_OLED_PORT 
-#endif
-
 //----------------------------------------------------------------------------------
 //OLED SSD1306 复位/RES
-#define		OLED_RES_Set()				(DL_GPIO_setPins(GPIO_OLED_PIN_RES_PORT, GPIO_OLED_PIN_RES_PIN))
-#define		OLED_RES_Clr()			    (DL_GPIO_clearPins(GPIO_OLED_PIN_RES_PORT, GPIO_OLED_PIN_RES_PIN))
+#define		OLED_RES_Set()				(DL_GPIO_setPins(GPIO_OLED_PIN_OLED_RES_PORT, GPIO_OLED_PIN_OLED_RES_PIN))
+#define		OLED_RES_Clr()			    (DL_GPIO_clearPins(GPIO_OLED_PIN_OLED_RES_PORT, GPIO_OLED_PIN_OLED_RES_PIN))
 					   
 
 //OLED控制用函数

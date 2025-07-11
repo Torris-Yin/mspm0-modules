@@ -3,8 +3,8 @@
  *   GPIO:
  *     1. Add a GPIO module.
  *     2. Name the group as "GPIO_ULTRASONIC".
- *     3. Name the pins as "PIN_TRIG" and "PIN_ECHO".
- *     4. Set the "Direction" of "PIN_ECHO" to "Input".
+ *     3. Name the pins as "PIN_ULTRASONIC_TRIG" and "PIN_ULTRASONIC_ECHO".
+ *     4. Set the "Direction" of "PIN_ULTRASONIC_ECHO" to "Input".
  *     5. Set the pins according to your needs.
  *   TIMER:
  *     1. Add a TIMER module.
@@ -20,12 +20,12 @@
 
 #include "ti_msp_dl_config.h"
 
-#ifndef GPIO_ULTRASONIC_PIN_TRIG_PORT
-#define GPIO_ULTRASONIC_PIN_TRIG_PORT GPIO_ULTRASONIC_PORT 
+#ifndef GPIO_ULTRASONIC_PIN_ULTRASONIC_TRIG_PORT
+#define GPIO_ULTRASONIC_PIN_ULTRASONIC_TRIG_PORT GPIO_ULTRASONIC_PORT 
 #endif
 
-#ifndef GPIO_ULTRASONIC_PIN_ECHO_PORT
-#define GPIO_ULTRASONIC_PIN_ECHO_PORT GPIO_ULTRASONIC_PORT 
+#ifndef GPIO_ULTRASONIC_PIN_ULTRASONIC_ECHO_PORT
+#define GPIO_ULTRASONIC_PIN_ULTRASONIC_ECHO_PORT GPIO_ULTRASONIC_PORT 
 #endif
 
 void Ultrasonic_Init(void);

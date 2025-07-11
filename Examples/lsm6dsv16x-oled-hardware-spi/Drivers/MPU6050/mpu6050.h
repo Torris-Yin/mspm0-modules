@@ -9,7 +9,7 @@
  *   GPIO:
  *     1. Add a GPIO module.
  *     2. Name the group as "GPIO_MPU6050".
- *     3. Name the pin as "PIN_INT".
+ *     3. Name the pin as "PIN_MPU6050_INT".
  *     4. Set Direction to "Input".
  *     5. Set "Internal Resistor" to "Pull-Up Resistor".
  *     6. Check the box "Enable Interrupts".

@@ -1,0 +1,5 @@
+*.clangd
+*.ccsproject
+Examples/**/.settings/
+Examples/**/Debug/
+Examples/**/targetConfigs/

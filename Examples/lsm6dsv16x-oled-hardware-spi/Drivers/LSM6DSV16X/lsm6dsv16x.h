@@ -9,7 +9,7 @@
  *   GPIO:
  *     1. Add a GPIO module.
  *     2. Name the group as "GPIO_LSM6DSV16X".
- *     3. Name the pin as "PIN_INT".
+ *     3. Name the pin as "PIN_LSM6DSV16X_INT".
  *     4. Set Direction to "Input".
  *     5. Check the box "Enable Interrupts".
  *     6. Set "Interrupt Priority" to "Level 3 - Lowest".
