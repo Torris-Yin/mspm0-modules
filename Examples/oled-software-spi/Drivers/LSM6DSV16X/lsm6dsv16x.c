@@ -107,7 +107,7 @@ void LSM6DSV16X_Init(void)
 
     if (whoamI != LSM6DSV16X_ID)
     {
-        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
+        return;
     }
 
     /* Restore default configuration */

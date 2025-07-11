@@ -132,7 +132,7 @@ void MPU6050_Init(void)
 
     result = mpu_init();
     if (result)
-        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
+        return;
 
     result = 0;
     /* Get/set hardware configuration. Start gyro. */
@@ -195,7 +195,7 @@ void MPU6050_Init(void)
     hal.dmp_on = 1;
 
     if (result)
-        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
+        return;
 
     /* Enable INT_GROUP1 handler. */
     enable_group1_irq = 1;

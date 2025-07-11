@@ -88,7 +88,7 @@ void VL53L0X_Init(void)
     status += VL53L0X_ClearInterruptMask(pDev, 0);
 
     if (status || (Id != 0xEEAA))
-        DL_SYSCTL_resetDevice(DL_SYSCTL_RESET_POR);
+        return;
 
     /* Enable INT_GROUP1 handler. */
     enable_group1_irq = 1;
