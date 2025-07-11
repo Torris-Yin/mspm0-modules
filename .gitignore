@@ -3,3 +3,4 @@
 Examples/**/.settings/
 Examples/**/Debug/
 Examples/**/targetConfigs/
+*.bat
