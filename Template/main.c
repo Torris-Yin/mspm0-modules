@@ -46,6 +46,9 @@ int main(void)
     // VL53L0X_Init();
     // LSM6DSV16X_Init();
 
+    /* Don't remove this! */
+    Interrupt_Init();
+
     while (1) 
     {
         

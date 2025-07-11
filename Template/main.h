@@ -2,6 +2,7 @@
 #define _MAIN_H_
 
 #include "clock.h"
+#include "interrupt.h"
 
 #include "mpu6050.h"
 #include "oled_software_i2c.h"
