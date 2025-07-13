@@ -67,8 +67,17 @@ int main(void)
         OLED_ShowString(5*8,0,oled_buffer,16);
         sprintf((char *)oled_buffer, "%-6.1f", euler.angle.roll);
         OLED_ShowString(5*8,2,oled_buffer,16);
-        sprintf((char *)oled_buffer, "%-6.1f", euler.angle.yaw);
-        OLED_ShowString(5*8,4,oled_buffer,16);
+
+        if(ahrs.initialising)
+        {
+            sprintf((char *)oled_buffer, "Init");
+            OLED_ShowString(5*8,4,oled_buffer,16);
+        }
+        else 
+        {
+            sprintf((char *)oled_buffer, "%-6.1f", euler.angle.yaw);
+            OLED_ShowString(5*8,4,oled_buffer,16);
+        }
 
         sprintf((char *)oled_buffer, "%6.0f", acceleration_mg[0]/1000.0);
         OLED_ShowString(15*6,0,oled_buffer,8);

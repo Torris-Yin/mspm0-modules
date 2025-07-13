@@ -7,6 +7,7 @@
 
 #define BOOT_TIME         (10)
 #define OFFSET_CAL_TIME   (50)
+#define GYRO_DEADBAND     (2)
 
 #define ODR_COEFF_12Hz5   (512)
 #define ODR_COEFF_26Hz    (256)
@@ -129,11 +130,11 @@ void Read_IMU660RB(void)
     data_raw_angular_rate[1] -= gyro_offset[1];
     data_raw_angular_rate[2] -= gyro_offset[2];
 
-    if((data_raw_angular_rate[0] >= -2) && (data_raw_angular_rate[0] <= 2))
+    if((data_raw_angular_rate[0] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[0] <= GYRO_DEADBAND))
         data_raw_angular_rate[0] = 0;
-    if((data_raw_angular_rate[1] >= -2) && (data_raw_angular_rate[1] <= 2))
+    if((data_raw_angular_rate[1] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[1] <= GYRO_DEADBAND))
         data_raw_angular_rate[1] = 0;
-    if((data_raw_angular_rate[2] >= -2) && (data_raw_angular_rate[2] <= 2))
+    if((data_raw_angular_rate[2] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[2] <= GYRO_DEADBAND))
         data_raw_angular_rate[2] = 0;
 
     angular_rate_mdps[0] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[0]);
