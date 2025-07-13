@@ -7,7 +7,6 @@
 
 #define BOOT_TIME         (10)
 #define OFFSET_CAL_TIME   (50)
-#define GYRO_DEADBAND     (2)
 
 #define ODR_COEFF_12Hz5   (512)
 #define ODR_COEFF_26Hz    (256)
@@ -20,20 +19,23 @@
 #define ODR_COEFF_3333Hz  (2)
 #define ODR_COEFF_6667Hz  (1)
 
-stmdev_ctx_t dev_ctx;
-
-static int16_t data_raw_acceleration[3];
-int16_t data_raw_angular_rate[3];
-static uint8_t whoamI, rst;
-static float sample_period;
-
-static int16_t gyro_offset[3];
+static stmdev_ctx_t dev_ctx;
 
 float acceleration_mg[3];
 float angular_rate_mdps[3];
 
+static int16_t data_raw_acceleration[3];
+static int16_t data_raw_angular_rate[3];
+static uint8_t whoamI, rst;
+static float samplePeriod, sampleRate;
+
+static FusionMatrix gyroscopeMisalignment = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+static FusionVector gyroscopeSensitivity = {1.0f, 1.0f, 1.0f};
+static FusionVector gyroscopeOffset = {0.0f, 0.0f, 0.0f};
+
 FusionAhrs ahrs;
 FusionEuler euler;
+static FusionOffset offset;
 
 static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len);
 static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
@@ -87,12 +89,14 @@ void IMU660RB_Init(void)
     lsm6dsr_data_ready_mode_set(&dev_ctx, LSM6DSR_DRDY_PULSED);
 
     lsm6dsr_odr_cal_reg_get(&dev_ctx, &freq_fine);
-    sample_period = 1.0 / ((6667 + ((0.0015 * freq_fine) * 6667)) / ODR_COEFF_52Hz);
+    sampleRate = (6667 + ((0.0015 * freq_fine) * 6667)) / ODR_COEFF_52Hz;
+    samplePeriod = 1.0 / sampleRate;
 
     /* Enable INT_GROUP1 handler. */
     enable_group1_irq = 1;
 
     FusionAhrsInitialise(&ahrs);
+    FusionOffsetInitialise(&offset, sampleRate);
 
     platform_delay(200);
 
@@ -106,15 +110,20 @@ void IMU660RB_Init(void)
         {
             offset_cnt--;
             lsm6dsr_angular_rate_raw_get(&dev_ctx, data_raw_angular_rate);
-            gyro_offset[0] += data_raw_angular_rate[0];
-            gyro_offset[1] += data_raw_angular_rate[1];
-            gyro_offset[2] += data_raw_angular_rate[2];
+
+            angular_rate_mdps[0] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[0]);
+            angular_rate_mdps[1] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[1]);
+            angular_rate_mdps[2] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[2]);
+
+            gyroscopeOffset.array[0] += angular_rate_mdps[0] / 1000.0;
+            gyroscopeOffset.array[1] += angular_rate_mdps[1] / 1000.0;
+            gyroscopeOffset.array[2] += angular_rate_mdps[2] / 1000.0;
         }
     }
 
-    gyro_offset[0] /= OFFSET_CAL_TIME;
-    gyro_offset[1] /= OFFSET_CAL_TIME;
-    gyro_offset[2] /= OFFSET_CAL_TIME;
+    gyroscopeOffset.array[0] /= OFFSET_CAL_TIME;
+    gyroscopeOffset.array[1] /= OFFSET_CAL_TIME;
+    gyroscopeOffset.array[2] /= OFFSET_CAL_TIME;
 }
 
 void Read_IMU660RB(void)
@@ -125,26 +134,17 @@ void Read_IMU660RB(void)
     acceleration_mg[2] = lsm6dsr_from_fs2g_to_mg(data_raw_acceleration[2]);
 
     lsm6dsr_angular_rate_raw_get(&dev_ctx, data_raw_angular_rate);
-
-    data_raw_angular_rate[0] -= gyro_offset[0];
-    data_raw_angular_rate[1] -= gyro_offset[1];
-    data_raw_angular_rate[2] -= gyro_offset[2];
-
-    if((data_raw_angular_rate[0] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[0] <= GYRO_DEADBAND))
-        data_raw_angular_rate[0] = 0;
-    if((data_raw_angular_rate[1] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[1] <= GYRO_DEADBAND))
-        data_raw_angular_rate[1] = 0;
-    if((data_raw_angular_rate[2] >= -1 * GYRO_DEADBAND) && (data_raw_angular_rate[2] <= GYRO_DEADBAND))
-        data_raw_angular_rate[2] = 0;
-
     angular_rate_mdps[0] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[0]);
     angular_rate_mdps[1] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[1]);
     angular_rate_mdps[2] = lsm6dsr_from_fs2000dps_to_mdps(data_raw_angular_rate[2]);
 
-    const FusionVector accelerometer = {acceleration_mg[0]/1000.0, acceleration_mg[1]/1000.0, acceleration_mg[2]/1000.0};
-    const FusionVector gyroscope = {angular_rate_mdps[0]/1000.0, angular_rate_mdps[1]/1000.0, angular_rate_mdps[2]/1000.0};
+    FusionVector accelerometer = {acceleration_mg[0]/1000.0, acceleration_mg[1]/1000.0, acceleration_mg[2]/1000.0};
+    FusionVector gyroscope = {angular_rate_mdps[0]/1000.0, angular_rate_mdps[1]/1000.0, angular_rate_mdps[2]/1000.0};
 
-    FusionAhrsUpdateNoMagnetometer(&ahrs, gyroscope, accelerometer, sample_period);
+    gyroscope = FusionCalibrationInertial(gyroscope, gyroscopeMisalignment, gyroscopeSensitivity, gyroscopeOffset);
+    gyroscope = FusionOffsetUpdate(&offset, gyroscope);
+
+    FusionAhrsUpdateNoMagnetometer(&ahrs, gyroscope, accelerometer, samplePeriod);
     euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(&ahrs));
 }
 
